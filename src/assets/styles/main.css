@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Text:wght@700&display=swap');
+
+:root {
+    --bg-color-counter: hsl(237, 18%, 59%);
+
+    --color-text-timer: hsl(345, 95%, 68%);
+    --color-text-white: hsl(0, 0%, 100%);
+    
+    --color-dark-desaturated: hsl(235, 16%, 14%);
+    --color-very-dark-blue: hsl(235, 16%, 14%);
+    --color-black: hsl(234, 17%, 12%);
+
+    --font-size-base: 14px;
+    --font-weight-base: 700;
+
+    font-family: 'Red Hat Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: var(--font-weight-base);
+    font-size: var(--font-size-base);
+}
+
+body {
+    background: linear-gradient(0deg, var(--color-very-dark-blue), var(--color-dark-desaturated) 60%);
+}
+
+body,
+p {
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+}
