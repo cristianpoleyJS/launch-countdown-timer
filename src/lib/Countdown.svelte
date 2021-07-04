@@ -1,55 +1,93 @@
 <script>
+    let finish = false
+
+    const calculateDays = (difference) => {
+        return Math.floor((difference) / (1000 * 60 * 60 * 24))
+    }
+
+    const calculateHours = (difference) => {
+        return Math.floor(((difference) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+    }
+
+    const calculateMinutes = (difference) => {
+        return Math.floor(((difference) % (1000 * 60 * 60)) / (1000 * 60))
+    }
+
+    const calculateSeconds = (difference) => {
+        return Math.floor(((difference) % (1000 * 60)) / 1000)
+    }
+
     const currentDate = new Date()
-    const countDownDate = new Date(currentDate.setDate(currentDate.getDate() + 15)).getTime()
+    const countdownDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 15, 0, 0, 0).getTime()
     const counter = {
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0
+        days: calculateDays(countdownDate - currentDate.getTime()),
+        hours: calculateHours(countdownDate - currentDate.getTime()),
+        minutes: calculateMinutes(countdownDate - currentDate.getTime()),
+        seconds: calculateSeconds(countdownDate - currentDate.getTime())
     }
     
-    setInterval(() => {
-    
-      const now = new Date().getTime()
-    
-      const distance = countDownDate - now
-    
-      counter.days = Math.floor(distance / (1000 * 60 * 60 * 24))
-      counter.hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-      counter.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
-      counter.seconds = Math.floor((distance % (1000 * 60)) / 1000)
-    })
+    const interval = setInterval(() => {
+
+        const today = new Date().getTime()
+
+        const distance = countdownDate - today
+
+        counter.days = calculateDays(distance)
+        counter.hours = calculateHours(distance)
+        counter.minutes = calculateMinutes(distance)
+        counter.seconds = calculateSeconds(distance)
+
+        if (distance <= 0) {
+            clearInterval(interval)
+            finish = true
+        }
+    }, 1000)
 </script>
 
 <main>
-    <section>
-        {#each Object.keys(counter) as key}
-            <div>
-                <span class="number">
-                    <span class="number-top" />
-                    <time>{counter[key]}</time>
-                    <span class="number-bottom" />
-                </span>
-                <span class="title">
-                    {key}
-                </span>
-            </div>
-        {/each}
-    </section>
+    {#if !finish}
+        <section>
+            {#each Object.keys(counter) as key}
+                <div>
+                    <span class="number">
+                        <span class="number-top" />
+                        <time>{counter[key]}</time>
+                        <span class="number-bottom" />
+                    </span>
+                    <span class="title">
+                        {key}
+                    </span>
+                </div>
+            {/each}
+        </section>
+    {:else}
+        <p class="finish">
+           Let's go!
+        </p>
+    {/if}
 </main>
 <style scoped>
     section {
         display: grid;
         grid-gap: 2rem;
-        grid-template-columns: 25fr 25fr 25fr 25fr;
+        grid-template-columns: var(--grid-template-columns-counter);
     }
 
-    span.number {
-        font-size: 100px;
+    span.title {
+        color: var(--color-counter-title);
+        display: block;
+        text-transform: uppercase;
+        font-size: var(--font-size-counter-title);
+        letter-spacing: 0.4em;
+        margin-top: 2rem;
+    }
+    span.number,
+    p.finish  {
+        font-size: var(--font-size-counter-number);
         display: block;
         border-radius: 8px;
         padding: 1rem 0;
-        color: var(--color-text-timer);
+        color: var(--color-counter-number);
         position: relative;
     }
     span.number:after {
@@ -61,7 +99,24 @@
         position: absolute;
         width: 100%;
         left: 0;
-        z-index: 0;
+    }
+    span.number-top,
+    span.number-bottom {
+        width: 100%;
+        height: 50%;
+        position: absolute;
+        border-radius: 8px;
+        z-index: 1;
+    }
+    span.number-top {
+        background-color: var(--bg-color-top-counter);
+        top: 0;
+        left: 0;
+    }
+    span.number-bottom {
+        background-color: var(--bg-color-bottom-counter);
+        bottom: 0;
+        left: 0;
     }
     time {
         z-index: 2;
@@ -69,52 +124,20 @@
         position: relative;
         overflow: hidden;
     }
-    time:before {
+    time:before,
+    time::after {
         content: '';
         background-color: var(--color-black);
         border-radius: 100%;
         position: absolute;
-        left: -8px;
-        top: calc(50% - 8px);
         width: 14px;
         height: 14px;
+        top: calc(50% - 7px);
+    }
+    time:before {
+        left: -8px;
     }
     time:after {
-        content: '';
-        background-color: var(--color-black);
-        border-radius: 100%;
-        position: absolute;
         right: -8px;
-        top: calc(50% - 8px);
-        width: 14px;
-        height: 14px;
-    }
-    span.number-top {
-        background-color: #2c2d44;
-        width: 100%;
-        height: 50%;
-        position: absolute;
-        top: 0;
-        border-radius: 8px;
-        left: 0;
-        z-index: 1;
-    }
-    span.number-bottom {
-        background-color: #34364f;
-        width: 100%;
-        height: 50%;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        border-radius: 8px;
-        z-index: 1;
-    }
-    span.title {
-        color: var(--bg-color-counter);
-        display: block;
-        text-transform: uppercase;
-        font-size: 16px;
-        letter-spacing: 0.4em;
-        margin-top: 2rem;
     }
 </style>

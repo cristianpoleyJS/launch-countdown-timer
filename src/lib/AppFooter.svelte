@@ -15,13 +15,6 @@
         position: absolute;
         bottom: 0;
         width: 100%;
-
-        --bg-image-facebook: url('../assets/images/icon-facebook.svg');
-        --bg-image-facebook-hover: url('../assets/images/icon-facebook-hover.svg');
-        --bg-image-instagram: url('../assets/images/icon-instagram.svg');
-        --bg-image-instagram-hover: url('../assets/images/icon-instagram-hover.svg');
-        --bg-image-pinterest: url('../assets/images/icon-pinterest.svg');
-        --bg-image-pinterest-hover: url('../assets/images/icon-pinterest-hover.svg');
     }
 
     div {
@@ -60,7 +53,7 @@
         background-image: var(--bg-image-pinterest-hover);
     }
 
-    @media (max-width: 564px) {
+    @media (max-width: 992px) {
         footer {
             background-position-x: -280px;
         }
