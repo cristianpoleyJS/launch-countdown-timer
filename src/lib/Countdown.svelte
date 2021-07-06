@@ -1,20 +1,24 @@
 <script>
     let finish = false
 
+    const formatDate = (date) => {
+        return date < 10 ? `0${date}` : date
+    }
+
     const calculateDays = (difference) => {
-        return Math.floor((difference) / (1000 * 60 * 60 * 24))
+        return formatDate(Math.floor((difference) / (1000 * 60 * 60 * 24)))
     }
 
     const calculateHours = (difference) => {
-        return Math.floor(((difference) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+        return formatDate(Math.floor(((difference) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)))
     }
 
     const calculateMinutes = (difference) => {
-        return Math.floor(((difference) % (1000 * 60 * 60)) / (1000 * 60))
+        return formatDate(Math.floor(((difference) % (1000 * 60 * 60)) / (1000 * 60)))
     }
 
     const calculateSeconds = (difference) => {
-        return Math.floor(((difference) % (1000 * 60)) / 1000)
+        return formatDate(Math.floor(((difference) % (1000 * 60)) / 1000))
     }
 
     const currentDate = new Date()
@@ -44,14 +48,14 @@
     }, 1000)
 </script>
 
-<main>
+<div>
     {#if !finish}
         <section>
             {#each Object.keys(counter) as key}
                 <div>
                     <span class="number">
                         <span class="number-top" />
-                        <time>{counter[key]}</time>
+                        <span class="number-date">{counter[key]}</span>
                         <span class="number-bottom" />
                     </span>
                     <span class="title">
@@ -65,7 +69,7 @@
            Let's go!
         </p>
     {/if}
-</main>
+</div>
 <style scoped>
     section {
         display: grid;
@@ -118,14 +122,14 @@
         bottom: 0;
         left: 0;
     }
-    time {
+    span.number-date {
         z-index: 2;
         display: block;
         position: relative;
         overflow: hidden;
     }
-    time:before,
-    time::after {
+    span.number-date:before,
+    span.number-date::after {
         content: '';
         background-color: var(--color-black);
         border-radius: 100%;
@@ -134,10 +138,10 @@
         height: 14px;
         top: calc(50% - 7px);
     }
-    time:before {
+    span.number-date:before {
         left: -8px;
     }
-    time:after {
+    span.number-date:after {
         right: -8px;
     }
 </style>
