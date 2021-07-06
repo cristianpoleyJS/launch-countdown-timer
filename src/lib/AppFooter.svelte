@@ -59,8 +59,8 @@
         }
 
         div {
-            margin-top: 160px;
             max-width: 200px;
+            margin-top: 80px;
         }
 
         i {
